@@ -7,11 +7,10 @@ const connection = mysql.createConnection({
     // password: '',
     // database: 'lalanote',
     // port: 3312,
-    host: 'https://web3.vpsthai.net/phpmyadmin',
+    host: 'inventage.co',
     user: 'zazzifbv_lalanote',
     password: '1253',
     database: 'zazzifbv_lalanote',
-    port: 21,
 });
 
 connection.connect((error) => {
