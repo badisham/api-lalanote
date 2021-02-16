@@ -13,13 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(fileUpload());
 
-var port = process.env.port || 3001;
-var server = app.listen(port, function () {
-    console.log('Server running');
-});
+// var port = process.env.port || 3001;
+// var server = app.listen(port, function () {
+//     console.log('Server running');
+// });
+app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}`));
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin');
     res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
     next();
 });
