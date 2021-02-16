@@ -17,7 +17,11 @@ export default class Score {
     static createScore = (req, res) => {
         mysqlQuery('INSERT INTO game_score SET ?', req.body)
             .then((rows) => {
-                res.send({ msg: 'success' });
+                let data = [req.body.score, req.body.member_id];
+
+                mysqlQuery('UPDATE member SET star = star + ? WHERE id = ?', data).then((rows) => {
+                    res.send({ msg: 'success' });
+                });
             })
             .catch((err) => {
                 return res.status(403).send({ error: err });
@@ -33,6 +37,20 @@ export default class Score {
                     gameScore3: rows[2].max_score,
                     gameScore4: rows[3].max_score,
                 });
+            })
+            .catch((err) => {
+                return res.status(403).send({ error: err });
+            });
+    };
+
+    static getStageByMemberId = (req, res) => {
+        mysqlQuery(
+            'SELECT * FROM (SELECT id,score,game FROM game_score WHERE member_id = ? AND game = ? ORDER BY created_at DESC LIMIT 10) as g ORDER BY g.id ASC',
+            [req.params.id, req.params.game],
+        )
+            .then(function (rows) {
+                console.log(rows);
+                return res.send({ score: rows });
             })
             .catch((err) => {
                 return res.status(403).send({ error: err });

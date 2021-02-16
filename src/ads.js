@@ -5,7 +5,6 @@ export default class Ads {
     static getAll = (req, res) => {
         mysqlQuery('SELECT id,name,description,img,url FROM ms_ads GROUP BY institution_id ORDER BY id DESC LIMIT 3')
             .then((rows) => {
-                console.log(rows);
                 return res.send({ ads: rows });
             })
             .catch((err) =>

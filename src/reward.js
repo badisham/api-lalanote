@@ -1,12 +1,5 @@
-// var mysql = require('mysql');
-// var connection = require('../connect-sql');
-// const uploadImage = require('./upload-aws');
-import jwt from 'jsonwebtoken';
-import mysql from 'mysql';
 import { mysqlQuery } from '../connect-sql.js';
 import * as uploadImage from './upload-aws.js';
-import { jwtEnv } from './constance/config.js';
-import ms from 'ms';
 
 export default class Reward {
     static getAll = (req, res) => {
@@ -27,6 +20,38 @@ export default class Reward {
         mysqlQuery('SELECT * FROM ms_reward WHERE id = ?', req.params.id)
             .then(function (rows) {
                 return res.send(rows);
+            })
+            .catch((err) =>
+                setImmediate(() => {
+                    throw err;
+                }),
+            );
+    };
+
+    static getRewardAlreadyMemberId = (req, res) => {
+        mysqlQuery('SELECT * FROM member_reward WHERE member_id = ?', req.params.id)
+            .then(function (rows) {
+                return res.send({ member_reward: rows });
+            })
+            .catch((err) =>
+                setImmediate(() => {
+                    throw err;
+                }),
+            );
+    };
+
+    static memberGetReward = (req, res) => {
+        const data = {
+            reward_id: req.params.reward_id,
+            member_id: req.params.id,
+        };
+        console.log(data);
+        mysqlQuery('INSERT INTO member_reward SET ?', data)
+            .then(function (rows) {
+                let data = [req.params.use_point, req.params.id];
+                mysqlQuery('UPDATE member SET star = star - ? WHERE id = ?', data).then((rows) => {
+                    return res.send(data.reward_id);
+                });
             })
             .catch((err) =>
                 setImmediate(() => {

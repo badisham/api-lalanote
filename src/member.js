@@ -24,7 +24,15 @@ export default class Member {
     static getById = (req, res) => {
         mysqlQuery('SELECT * FROM member WHERE id = ?', req.params.id)
             .then(function (rows) {
-                res.end(JSON.stringify(rows[0]));
+                if (rows.length > 0) {
+                    return res.send({
+                        id: rows[0].id,
+                        username: rows[0].username,
+                        star: rows[0].star,
+                    });
+                } else {
+                    return res.status(403).send({ error: 'No account' });
+                }
             })
             .catch((err) =>
                 setImmediate(() => {
@@ -75,7 +83,6 @@ export default class Member {
     static login = (req, res) => {
         const { username, password } = req.headers;
 
-        console.log(username, password);
         mysqlQuery('SELECT * FROM member WHERE username = ? AND password = ? ', [username, password])
             .then(function (rows) {
                 console.log(rows);
@@ -98,15 +105,13 @@ export default class Member {
 
     static gameLogin = (req, res) => {
         const { username, password } = req.body;
-
-        console.log(username, password);
         mysqlQuery('SELECT * FROM member WHERE username = ? AND password = ? ', [username, password])
             .then(function (rows) {
-                console.log(rows);
                 if (rows.length > 0) {
                     return res.send({
                         id: rows[0].id,
                         username: rows[0].username,
+                        star: rows[0].star,
                     });
                 } else {
                     return res.status(403).send({ error: 'No account' });

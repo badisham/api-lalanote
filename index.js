@@ -31,11 +31,16 @@ app.get('/member/login', member.login);
 app.post('/member/game-login', member.gameLogin);
 app.post('/member/register', member.register);
 app.get('/member/get-all', member.checkLogin, member.getAll);
+app.get('/member/get-data/:id', member.getById);
 
 app.get('/score/member/:id', score.getByMemberId);
 app.post('/score/update/', score.createScore);
+app.get('/score/member/:game/:id', score.getStageByMemberId);
 
 app.get('/reward', reward.getAll);
 app.post('/reward', reward.create);
+app.get('/reward/member/already/:id', reward.getRewardAlreadyMemberId);
+app.get('/reward/member/get/:reward_id/:id/:use_point', reward.memberGetReward);
+
 app.get('/ads', ads.getAll);
 app.post('/ads', ads.create);
