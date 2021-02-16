@@ -2,11 +2,16 @@
 import mysql from 'mysql';
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'lalanote',
-    port: 3312,
+    // host: 'localhost',
+    // user: 'root',
+    // password: '',
+    // database: 'lalanote',
+    // port: 3312,
+    host: 'https://web3.vpsthai.net/phpmyadmin',
+    user: 'zazzifbv_lalanote',
+    password: '1253',
+    database: 'zazzifbv_lalanote',
+    port: 21,
 });
 
 connection.connect((error) => {
