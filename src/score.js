@@ -32,10 +32,10 @@ export default class Score {
         mysqlQuery('SELECT *,MAX(score) as max_score FROM game_score WHERE member_id = ? GROUP BY game', req.params.id)
             .then(function (rows) {
                 return res.send({
-                    gameScore1: rows[1].max_score,
-                    gameScore2: rows[0].max_score,
-                    gameScore3: rows[2].max_score,
-                    gameScore4: rows[3].max_score,
+                    gameScore1: rows[1]?.max_score || 0,
+                    gameScore2: rows[0]?.max_score || 0,
+                    gameScore3: rows[2]?.max_score || 0,
+                    gameScore4: rows[3]?.max_score || 0,
                 });
             })
             .catch((err) => {
