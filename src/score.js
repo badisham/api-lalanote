@@ -50,6 +50,15 @@ export default class Score {
         )
             .then(function (rows) {
                 console.log(rows);
+                if(!rows[0]){
+                    rows = [
+                        {
+                            id: 1,
+                            game: req.params.game,
+                            score: 0
+                        }
+                    ]
+                }
                 return res.send({ score: rows });
             })
             .catch((err) => {
