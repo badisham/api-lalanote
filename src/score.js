@@ -31,12 +31,15 @@ export default class Score {
     static getByMemberId = (req, res) => {
         mysqlQuery('SELECT *,MAX(score) as max_score FROM game_score WHERE member_id = ? GROUP BY game', req.params.id)
             .then(function (rows) {
-                return res.send({
+                console.log(rows.length , 'asdasdasd');
+                let data = {
                     gameScore1: rows[1]?.max_score || 0,
                     gameScore2: rows[0]?.max_score || 0,
                     gameScore3: rows[2]?.max_score || 0,
                     gameScore4: rows[3]?.max_score || 0,
-                });
+                }
+                console.log(data, 'aaaaa');
+                return res.send(data);
             })
             .catch((err) => {
                 return res.status(403).send({ error: err });
@@ -50,7 +53,7 @@ export default class Score {
         )
             .then(function (rows) {
                 console.log(rows);
-                if(!rows[0]){
+                if(rows.length == 0){
                     rows = [
                         {
                             id: 1,
